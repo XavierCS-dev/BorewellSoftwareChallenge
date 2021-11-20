@@ -3,6 +3,17 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * General commentary:
+ * From my testing, the programming in generally function and is able to satisfy the given requirements.
+ * Allowing the use of composite walls significantly complicated this project, and resulted in the final product
+ * being less finished, and messier than desired.
+ * By messier, I am referring to the frequent copy and pasting of similar code. Many components will run similar
+ * code but require slight adjustments to the specific scenarios, these could have been implemented as functions
+ * that alter their behaviour slightly when given certain arguments, however, this would have most definitely taken
+ * me over the 4-hour time constraint, thus I copy and pasted a lot of code.
+ */
+
 public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
@@ -86,6 +97,8 @@ public class Main {
         Surface[] currSubSurfaces;
         Surface[] walls;
 
+        // A rectangular wall, is defined as "uniform" within the code.
+        // A wall of any other shape, made up of rectangles, is defined as composite.
         while (!validInput)
         {
             userSelection = getInput("Is your floor rectangular? Y/N");
@@ -188,6 +201,9 @@ public class Main {
 
             while (!validInput)
             {
+                // All walls required to be of equal height, thus uniform walls allow the entry of height once for all
+                // walls. However, enforcing equal height for subsurface walls is complicated, and would result in me
+                // going over the time limit
                 if (currWallUniform)
                 {
                     double wallWidth;
@@ -288,7 +304,7 @@ public class Main {
     }
 
 
-
+    // Used to build an array of sub-surfaces, which is used to generate a full surface.
     private static Surface[] getSubSurfaces()
     {
         int subSurfaceQuantity = Integer.parseInt(getInput("Enter the quantity of sub-surfaces"));
@@ -332,6 +348,7 @@ public class Main {
         System.out.println("Room removed");
     }
 
+    // Display total surface area required to paint a room
     private static void paintRoom()
     {
         try
@@ -385,6 +402,7 @@ public class Main {
 
     }
 
+    // Display all room numbers
     private static void listRooms()
     {
         for (int i = 0; i < rooms.size(); ++i)
