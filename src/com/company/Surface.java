@@ -4,64 +4,58 @@ package com.company;
 // In this context, a surface can represent a floor, a wall, a ceiling and other such objects and is strictly 2D.
 
 public class Surface {
-    private double length;
-    private double width;
+    private final double length;
+    private final double width;
+    private final double area;
 
     // Sub-surface array, allows a surface to be divided into squares, to account for varying surface shapes.
 
     Surface[] subSurfaces = null;
 
-    // A surface can be either a simple square, or a collection of squares.
+    // A surface can be either a simple rectangle, or a collection of rectangles.
 
     public Surface(double length, double width)
     {
         this.length = length;
         this.width = width;
+        this.area = length * width;
     }
 
-    public Surface(Surface[] subSurfaces)
+    public Surface(Surface[] subSurfaces) throws NullPointerException
     {
-        this.subSurfaces = subSurfaces.clone();
-    }
+        if (subSurfaces == null || subSurfaces.length < 1)
+        {
+            throw new NullPointerException("No sub surfaces provided!");
+        }
 
-    public double getLength() {
-        if (this.isUniform())
-            return length;
+        // Each surface will calculate the total area of all it's surfaces upon creation.
+        // Surface properties are immutable, and thus these values only need to be calculated once.
+        this.subSurfaces = subSurfaces.clone();
         double totalLength = 0;
         for (Surface s : subSurfaces)
             totalLength += s.getLength();
-        return totalLength;
-    }
+        this.length = totalLength;
 
-    public double getWidth() {
-        if (this.isUniform())
-            return width;
         double totalWidth = 0;
         for (Surface s : subSurfaces)
             totalWidth += s.getWidth();
-        return totalWidth;
+        this.width = totalWidth;
+
+        this.area = length * width;
+
+    }
+
+    public double getLength() {
+       return length;
+    }
+
+    public double getWidth() {
+        return width;
     }
 
     public double getArea()
     {
-        if (this.isUniform())
-        {
-            return length * width;
-        }
-
-        // Recursively call getArea to all sub-surfaces, not the fastest, but clean and simple.
-        double totalArea = 0;
-        for (Surface s: subSurfaces)
-        {
-            totalArea += s.getArea();
-        }
-
-        return totalArea;
+        return area;
     }
 
-    // Used to check whether a surface is made up of sub-surfaces
-    public boolean isUniform()
-    {
-        return subSurfaces == null;
-    }
 }

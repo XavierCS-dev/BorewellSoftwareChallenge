@@ -36,6 +36,9 @@ public class Room {
         this.length = floor.getLength();
         this.width = floor.getWidth();
         this.height = walls[0].getWidth();
+
+        // Area is calculated as if it were a prism rather than the typical l * w * h due to the
+        // variety of possible room shapes, enabled by composite surfaces.
         this.volume = floorArea * height;
     }
 
@@ -67,10 +70,14 @@ public class Room {
         return height;
     }
 
-    // Shape of the floor is unknown due to the possibility of a composite shape, thus, is treated like a prism.
     public double getVolume()
     {
         return this.volume;
+    }
+
+    public double getTotalSurfaceArea()
+    {
+        return getWallsArea() + getFloorArea() + getCeilingArea();
     }
 
 }
